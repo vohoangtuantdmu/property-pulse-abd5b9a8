@@ -1,11 +1,14 @@
-import { Building2, ToggleLeft, ToggleRight } from "lucide-react";
+import { Building2, Search, PlusCircle } from "lucide-react";
+import type { CustomerTab } from "@/pages/Index";
 
 interface AppHeaderProps {
   mode: "broker" | "customer";
   onModeChange: (mode: "broker" | "customer") => void;
+  customerTab?: CustomerTab;
+  onCustomerTabChange?: (tab: CustomerTab) => void;
 }
 
-const AppHeader = ({ mode, onModeChange }: AppHeaderProps) => {
+const AppHeader = ({ mode, onModeChange, customerTab, onCustomerTabChange }: AppHeaderProps) => {
   return (
     <header className="h-14 border-b border-border bg-card flex items-center justify-between px-5 shrink-0 z-50">
       <div className="flex items-center gap-2.5">
@@ -15,6 +18,33 @@ const AppHeader = ({ mode, onModeChange }: AppHeaderProps) => {
         <span className="font-bold text-lg tracking-tight text-foreground">
           RealDSS
         </span>
+
+        {mode === "customer" && onCustomerTabChange && (
+          <div className="flex items-center bg-muted rounded-lg p-0.5 gap-0.5 ml-4">
+            <button
+              onClick={() => onCustomerTabChange("search")}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+                customerTab === "search"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Search className="w-3.5 h-3.5" />
+              Tìm kiếm
+            </button>
+            <button
+              onClick={() => onCustomerTabChange("post")}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+                customerTab === "post"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              Đăng Tin BĐS
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center bg-muted rounded-lg p-0.5 gap-0.5">
