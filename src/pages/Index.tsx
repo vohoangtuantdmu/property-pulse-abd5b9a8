@@ -7,12 +7,13 @@ import FinanceAIContent from "@/components/FinanceAIContent";
 import ReportContent from "@/components/ReportContent";
 import CustomerContent from "@/components/CustomerContent";
 import PostListingContent from "@/components/PostListingContent";
+import ListingManagement from "@/components/ListingManagement";
 
 export type CustomerTab = "search" | "post";
 
 const Index = () => {
-  const [mode, setMode] = useState<"broker" | "customer">("customer");
-  const [brokerTab, setBrokerTab] = useState<BrokerTab>("reports");
+  const [mode, setMode] = useState<"broker" | "customer">("broker");
+  const [brokerTab, setBrokerTab] = useState<BrokerTab>("listings");
   const [customerTab, setCustomerTab] = useState<CustomerTab>("post");
 
   return (
@@ -31,6 +32,8 @@ const Index = () => {
             <FinanceAIContent />
           ) : brokerTab === "reports" ? (
             <ReportContent />
+          ) : brokerTab === "listings" ? (
+            <ListingManagement />
           ) : (
             <BrokerContent />
           )
