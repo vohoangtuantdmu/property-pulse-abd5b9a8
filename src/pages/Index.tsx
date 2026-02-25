@@ -4,11 +4,12 @@ import BrokerSidebar, { type BrokerTab } from "@/components/BrokerSidebar";
 import BrokerContent from "@/components/BrokerContent";
 import LegalGISContent from "@/components/LegalGISContent";
 import FinanceAIContent from "@/components/FinanceAIContent";
+import ReportContent from "@/components/ReportContent";
 import CustomerContent from "@/components/CustomerContent";
 
 const Index = () => {
   const [mode, setMode] = useState<"broker" | "customer">("broker");
-  const [brokerTab, setBrokerTab] = useState<BrokerTab>("finance");
+  const [brokerTab, setBrokerTab] = useState<BrokerTab>("reports");
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -24,6 +25,8 @@ const Index = () => {
             <LegalGISContent />
           ) : brokerTab === "finance" ? (
             <FinanceAIContent />
+          ) : brokerTab === "reports" ? (
+            <ReportContent />
           ) : (
             <BrokerContent />
           )
