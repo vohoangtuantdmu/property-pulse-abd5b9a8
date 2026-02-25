@@ -8,12 +8,13 @@ import ReportContent from "@/components/ReportContent";
 import CustomerContent from "@/components/CustomerContent";
 import PostListingContent from "@/components/PostListingContent";
 import ListingManagement from "@/components/ListingManagement";
+import DashboardContent from "@/components/DashboardContent";
 
 export type CustomerTab = "search" | "post";
 
 const Index = () => {
   const [mode, setMode] = useState<"broker" | "customer">("broker");
-  const [brokerTab, setBrokerTab] = useState<BrokerTab>("listings");
+  const [brokerTab, setBrokerTab] = useState<BrokerTab>("dashboard");
   const [customerTab, setCustomerTab] = useState<CustomerTab>("post");
 
   return (
@@ -24,7 +25,9 @@ const Index = () => {
           <BrokerSidebar activeTab={brokerTab} onTabChange={setBrokerTab} />
         )}
         {mode === "broker" ? (
-          brokerTab === "survey" ? (
+          brokerTab === "dashboard" ? (
+            <DashboardContent onNavigate={setBrokerTab} />
+          ) : brokerTab === "survey" ? (
             <BrokerContent />
           ) : brokerTab === "legal" ? (
             <LegalGISContent />
