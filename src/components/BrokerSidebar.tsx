@@ -7,16 +7,23 @@ import {
   Megaphone,
 } from "lucide-react";
 
-const navItems = [
-  { icon: LayoutDashboard, label: "Tổng quan Dashboard", active: false },
-  { icon: ClipboardCheck, label: "Khảo sát & Định giá", active: true },
-  { icon: Scale, label: "Kiểm tra Quy hoạch/Pháp lý", active: false },
-  { icon: BrainCircuit, label: "Phân tích Tài chính AI", active: false },
-  { icon: FileText, label: "Báo cáo & Tư vấn", active: false },
-  { icon: Megaphone, label: "Quản lý Tin đăng", active: false },
+export type BrokerTab = "dashboard" | "survey" | "legal" | "finance" | "reports" | "listings";
+
+const navItems: { icon: React.ComponentType<{ className?: string }>; label: string; tab: BrokerTab }[] = [
+  { icon: LayoutDashboard, label: "Tổng quan Dashboard", tab: "dashboard" },
+  { icon: ClipboardCheck, label: "Khảo sát & Định giá", tab: "survey" },
+  { icon: Scale, label: "Kiểm tra Quy hoạch/Pháp lý", tab: "legal" },
+  { icon: BrainCircuit, label: "Phân tích Tài chính AI", tab: "finance" },
+  { icon: FileText, label: "Báo cáo & Tư vấn", tab: "reports" },
+  { icon: Megaphone, label: "Quản lý Tin đăng", tab: "listings" },
 ];
 
-const BrokerSidebar = () => {
+interface BrokerSidebarProps {
+  activeTab: BrokerTab;
+  onTabChange: (tab: BrokerTab) => void;
+}
+
+const BrokerSidebar = ({ activeTab, onTabChange }: BrokerSidebarProps) => {
   return (
     <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0">
       <div className="p-4 border-b border-sidebar-border">
@@ -27,9 +34,10 @@ const BrokerSidebar = () => {
       <nav className="flex-1 p-3 space-y-1">
         {navItems.map((item) => (
           <button
-            key={item.label}
+            key={item.tab}
+            onClick={() => onTabChange(item.tab)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
-              item.active
+              activeTab === item.tab
                 ? "bg-sidebar-accent text-sidebar-accent-foreground border-l-2 border-sidebar-primary"
                 : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
             }`}
