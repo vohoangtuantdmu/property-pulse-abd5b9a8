@@ -48,7 +48,7 @@ const BrokerSidebar = ({ activeTab, onTabChange }: BrokerSidebarProps) => {
         ))}
       </nav>
       <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 rounded-full bg-sidebar-accent flex items-center justify-center text-xs font-bold text-sidebar-accent-foreground">
             NV
           </div>
@@ -56,6 +56,14 @@ const BrokerSidebar = ({ activeTab, onTabChange }: BrokerSidebarProps) => {
             <p className="text-sm font-medium text-sidebar-foreground">Nguyễn Văn A</p>
             <p className="text-xs text-sidebar-muted">Chuyên viên Định giá</p>
           </div>
+        </div>
+        <div className="border-t border-sidebar-border pt-3">
+          <p className="text-[10px] text-sidebar-muted leading-relaxed">
+            DSS Real Estate V1.0
+          </p>
+          <p className="text-[9px] text-sidebar-muted/60 leading-relaxed mt-0.5">
+            Developed by: Hoàng Tuấn, Tuấn Kiệt, Minh Quân, Minh Nhật, Quốc Thái
+          </p>
         </div>
       </div>
     </aside>
