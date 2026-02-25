@@ -33,7 +33,7 @@ const Index = () => {
           ) : brokerTab === "reports" ? (
             <ReportContent />
           ) : brokerTab === "listings" ? (
-            <ListingManagement />
+            <ListingManagement onNavigate={setBrokerTab} />
           ) : (
             <BrokerContent />
           )

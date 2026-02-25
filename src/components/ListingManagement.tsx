@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { FileText, MapPin, Play, ShieldCheck, Brain, MessageSquare, CheckCircle, AlertTriangle, Clock, Eye, Filter } from "lucide-react";
+import { FileText, MapPin, Play, ShieldCheck, Brain, MessageSquare, CheckCircle, AlertTriangle, Clock, Eye, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import type { BrokerTab } from "@/components/BrokerSidebar";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -60,11 +61,35 @@ const extractedData = [
   { label: "Chủ sở hữu", value: "Nguyễn Văn A" },
 ];
 
-const ListingManagement = () => {
+interface ListingManagementProps {
+  onNavigate?: (tab: BrokerTab) => void;
+}
+
+const ListingManagement = ({ onNavigate }: ListingManagementProps) => {
   const [activeStatus, setActiveStatus] = useState("pending");
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const handleDSSAction = (label: string, targetTab: BrokerTab) => {
+    setLoading(label);
+    setTimeout(() => {
+      setLoading(null);
+      onNavigate?.(targetTab);
+    }, 1200);
+  };
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+    <div className="flex-1 flex flex-col min-h-0 overflow-hidden relative">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center animate-fade-in">
+          <div className="bg-card border border-border rounded-2xl p-8 shadow-xl text-center space-y-3">
+            <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
+            <p className="text-sm font-semibold text-foreground">Đang xử lý dữ liệu...</p>
+            <p className="text-xs text-muted-foreground">{loading}</p>
+          </div>
+        </div>
+      )}
+
       {/* Status Tabs */}
       <div className="border-b border-border bg-card px-5 py-0 shrink-0">
         <div className="flex items-center gap-1">
@@ -104,7 +129,7 @@ const ListingManagement = () => {
           {listings.map((item) => (
             <div
               key={item.id}
-              className={`p-3 border-b border-border cursor-pointer transition-all ${
+              className={`p-3 border-b border-border cursor-pointer transition-all hover:shadow-sm ${
                 item.active
                   ? "bg-primary/5 border-l-2 border-l-primary"
                   : "hover:bg-muted/50"
@@ -145,7 +170,7 @@ const ListingManagement = () => {
                 Quận 1, TP. HCM — Khách hàng: Nguyễn Văn A
               </p>
             </div>
-            <Badge className="bg-amber-500/15 text-amber-600 border-amber-500/30 gap-1">
+            <Badge className="bg-warning/15 text-warning-foreground border-warning/30 gap-1">
               <Clock className="w-3 h-3" />
               Chờ Duyệt
             </Badge>
@@ -193,17 +218,17 @@ const ListingManagement = () => {
               Công cụ Thẩm định DSS
             </h3>
             <div className="grid grid-cols-3 gap-3">
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium">
+              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium hover:border-primary/50 hover:bg-primary/5 transition-all" onClick={() => handleDSSAction("Chạy Khảo Sát Giá (Bán kính 2km)", "survey")}>
                 <ShieldCheck className="w-5 h-5 text-primary" />
                 Chạy Khảo Sát Giá
                 <span className="text-[10px] text-muted-foreground font-normal">(Bán kính 2km)</span>
               </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium">
+              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium hover:border-primary/50 hover:bg-primary/5 transition-all" onClick={() => handleDSSAction("Kiểm tra Bản đồ Quy hoạch (GIS)", "legal")}>
                 <MapPin className="w-5 h-5 text-primary" />
                 Kiểm tra Bản đồ Quy hoạch
                 <span className="text-[10px] text-muted-foreground font-normal">(GIS)</span>
               </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium">
+              <Button variant="outline" className="h-auto py-4 flex-col gap-2 text-xs font-medium hover:border-primary/50 hover:bg-primary/5 transition-all" onClick={() => handleDSSAction("Khởi chạy AI Định Giá (GNN/CNN)", "finance")}>
                 <Brain className="w-5 h-5 text-primary" />
                 Khởi chạy AI Định Giá
                 <span className="text-[10px] text-muted-foreground font-normal">(GNN/CNN)</span>
@@ -223,11 +248,11 @@ const ListingManagement = () => {
               className="mb-4"
             />
             <div className="flex gap-3">
-              <Button className="flex-1 h-11 gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+              <Button className="flex-1 h-11 gap-2 bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]/90 text-[hsl(var(--success-foreground))]">
                 <CheckCircle className="w-4 h-4" />
                 ✅ Phê Duyệt & Xuất Bản
               </Button>
-              <Button variant="outline" className="flex-1 h-11 gap-2 border-amber-500/50 text-amber-600 hover:bg-amber-50 hover:text-amber-700">
+              <Button variant="outline" className="flex-1 h-11 gap-2 border-[hsl(var(--warning))]/50 text-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))]/10">
                 <AlertTriangle className="w-4 h-4" />
                 ⚠️ Yêu Cầu Chỉnh Sửa
               </Button>
