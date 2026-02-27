@@ -1,6 +1,7 @@
 import { useState } from "react";
-import AppHeader from "@/components/AppHeader";
+import AppHeader, { type AppMode } from "@/components/AppHeader";
 import BrokerSidebar, { type BrokerTab } from "@/components/BrokerSidebar";
+import AdminSidebar, { type AdminTab } from "@/components/AdminSidebar";
 import BrokerContent from "@/components/BrokerContent";
 import LegalGISContent from "@/components/LegalGISContent";
 import FinanceAIContent from "@/components/FinanceAIContent";
@@ -9,13 +10,28 @@ import CustomerContent from "@/components/CustomerContent";
 import PostListingContent from "@/components/PostListingContent";
 import ListingManagement from "@/components/ListingManagement";
 import DashboardContent from "@/components/DashboardContent";
+import BrokerManagement from "@/components/admin/BrokerManagement";
+import GISLegalData from "@/components/admin/GISLegalData";
+import SystemParameters from "@/components/admin/SystemParameters";
+import SystemOverview from "@/components/admin/SystemOverview";
 
 export type CustomerTab = "search" | "post";
 
 const Index = () => {
-  const [mode, setMode] = useState<"broker" | "customer">("broker");
+  const [mode, setMode] = useState<AppMode>("admin");
   const [brokerTab, setBrokerTab] = useState<BrokerTab>("dashboard");
   const [customerTab, setCustomerTab] = useState<CustomerTab>("post");
+  const [adminTab, setAdminTab] = useState<AdminTab>("brokers");
+
+  const renderAdminContent = () => {
+    switch (adminTab) {
+      case "overview": return <SystemOverview />;
+      case "brokers": return <BrokerManagement />;
+      case "gis": return <GISLegalData />;
+      case "params": return <SystemParameters />;
+      default: return <BrokerManagement />;
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -24,7 +40,12 @@ const Index = () => {
         {mode === "broker" && (
           <BrokerSidebar activeTab={brokerTab} onTabChange={setBrokerTab} />
         )}
-        {mode === "broker" ? (
+        {mode === "admin" && (
+          <AdminSidebar activeTab={adminTab} onTabChange={setAdminTab} />
+        )}
+        {mode === "admin" ? (
+          renderAdminContent()
+        ) : mode === "broker" ? (
           brokerTab === "dashboard" ? (
             <DashboardContent onNavigate={setBrokerTab} />
           ) : brokerTab === "survey" ? (
