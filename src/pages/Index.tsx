@@ -18,8 +18,8 @@ import SystemOverview from "@/components/admin/SystemOverview";
 export type CustomerTab = "search" | "post";
 
 const Index = () => {
-  const [mode, setMode] = useState<AppMode>("admin");
-  const [brokerTab, setBrokerTab] = useState<BrokerTab>("dashboard");
+  const [mode, setMode] = useState<AppMode>("broker");
+  const [brokerTab, setBrokerTab] = useState<BrokerTab>("reports");
   const [customerTab, setCustomerTab] = useState<CustomerTab>("post");
   const [adminTab, setAdminTab] = useState<AdminTab>("brokers");
 
